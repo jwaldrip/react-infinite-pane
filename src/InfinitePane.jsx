@@ -167,9 +167,8 @@ export default class InfinitePane extends React.Component {
         item = this.fullList[0];
         loaded = false;
       }
-      const key = _.uniqueId('inifiniteItem');
       const ref = `item_${index}`;
-      const component = <Component loaded={loaded} key={key} ref={ref} {...item} {...this.props.componentProps} />;
+      const component = <Component loaded={loaded} key={index} ref={ref} {...item} {...this.props.componentProps} />;
       return component;
     });
   }

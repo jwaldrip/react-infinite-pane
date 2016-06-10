@@ -51,16 +51,44 @@ class DemoPage extends React.Component {
     this.setState({ imageHeight: input.value });
   }
 
+  renderSettings() {
+    const { imageCount, imageHeight, imageWidth } = this.state;
+    const style = {
+      left: 0,
+      bottom: 0,
+      opacity: 0.9,
+      position: 'fixed',
+      width: '100%',
+      backgroundColor: 'white',
+      padding: 10,
+      borderTop: '1px grey solid'
+    };
+    return (
+      <div style={style}>
+        <div style={{ float: 'left' }}>
+          <label for="imageCount">Number of Images to Load:</label>&nbsp;
+          <input name="imageCount" type="number" value={imageCount} onChange={this.handleImageCountChange} />&nbsp;
+          <label for="imageWidth">Image Width:</label>&nbsp;
+          <input name="imageWidth" type="number" value={imageWidth} onChange={this.handleImageWidthChange} />&nbsp;
+          <label for="imageHeight">Image Height:</label>&nbsp;
+          <input name="imageHeight" type="number" value={imageHeight} onChange={this.handleImageHeightChange} />&nbsp;
+        </div>
+        <div style={{ float: 'right', marginRight: 20 }}>
+          <strong>react-infinite-pane</strong>
+          &nbsp;::
+          built by <a href="https://github.com/jwaldrip">Jason Waldrip</a>
+          &nbsp;::&nbsp;
+          <a href="https://github.com/jwaldrip/react-infinite-pane">view it on github</a>
+        </div>
+      </div>
+    );
+  }
+
   render() {
     const { imageCount, imageHeight, imageWidth } = this.state;
     return (
       <div>
-        <label for="imageCount">Number of Images to Load:</label>&nbsp;
-        <input name="imageCount" type="number" value={imageCount} onChange={this.handleImageCountChange} />&nbsp;
-        <label for="imageWidth">Image Width:</label>&nbsp;
-        <input name="imageWidth" type="number" value={imageWidth} onChange={this.handleImageWidthChange} />&nbsp;
-        <label for="imageHeight">Image Height:</label>&nbsp;
-        <input name="imageHeight" type="number" value={imageHeight} onChange={this.handleImageHeightChange} />&nbsp;
+        {this.renderSettings()}
         <InfinitePane
           Component={LoadedImage}
           componentProps={{ width: imageWidth, height: imageHeight }}

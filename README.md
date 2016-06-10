@@ -2,6 +2,8 @@
 
 > Responsive infinite scroll pane for React
 
+### Demo: https://react-infinite-scroll.herokuapp.com/
+
 ## Features
 
 * Supports a static scroll bar so the height of the window should always be equal to what it would be if all items were loaded.
@@ -20,13 +22,18 @@ $ npm i react-infinite-pane --save-dev
 
 ```js
 <InfinitePane
-  Component={LoadedImage} // The component to pass props to
-  componentProps // Static props to pass the component
-  list={this.imageUrls} // A list of objects to be passed as props to [Component]
+  Component={MyComponent} // The component to pass props to
+  componentProps={{ width: 10 }} // Static props to pass the component
+  list={data} // A list of objects to be passed as props to [Component]
   totalCount={imageCount} // Required to determine scrollbar height
   fetch={({ startIndex, endIndex }) => { /* ... */ }} // the function to call to load more (if not preloaded).
 />
 ```
+
+### The `loaded` prop
+
+`this.props.loaded` will only return true if the item is in the index. Otherwise it will return a copy of the first item in the index. Use this to build logic into your component to display a loading graphic/message.
+
 
 ## Running tests
 
