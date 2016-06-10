@@ -29,9 +29,8 @@ class DemoPage extends React.Component {
   }
 
   get imageUrls() {
-    const { imageHeight, imageWidth } = this.state;
     const { imageList } = this;
-    return _.times(this.state.imageCount, i => ({ src: imageList[i % imageList.length], height: imageHeight, width: imageWidth }));
+    return _.times(this.state.imageCount, i => ({ src: imageList[i % imageList.length] }));
   }
 
   componentDidMount() {
@@ -64,6 +63,7 @@ class DemoPage extends React.Component {
         <input name="imageHeight" type="number" value={imageHeight} onChange={this.handleImageHeightChange} />&nbsp;
         <InfinitePane
           Component={LoadedImage}
+          componentProps={{ width: imageWidth, height: imageHeight }}
           list={this.imageUrls}
           totalCount={imageCount}
         />
