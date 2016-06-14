@@ -6,24 +6,34 @@ const nullNode = document.createElement('div');
 
 export default class InfinitePane extends React.Component {
 
-  static defaultProps = {
-    componentProps: {},
-    bufferRows: 3
-  };
-
   static propTypes = {
+    // The component to render for each item in the list.
     Component: React.PropTypes.func.isRequired,
+    // The total number of items in the list.
     totalCount: React.PropTypes.number.isRequired,
+    // The list of object properties to be passed to the component.
     list: React.PropTypes.array.isRequired,
+    // The static props to pass to the underlying component.
     componentProps: React.PropTypes.object,
+    // The function to fetch additional items.
     fetch: React.PropTypes.func,
+    // The number of rows to buffer above and below the fold.
     bufferRows: React.PropTypes.number
   };
 
+  static defaultProps = {
+    componentProps: {},
+    bufferRows: 5
+  };
+
   static initialState = {
+    // The starting row.
     startRow: 0,
+    // The visible rows.
     visibleRows: 1,
+    // The number of items per row.
     itemsPerRow: 1,
+    // The row height.
     rowHeight: 0
   };
 
@@ -32,30 +42,35 @@ export default class InfinitePane extends React.Component {
     this.state = InfinitePane.initialState;
   }
 
+  // getter, calculate the left margin of each item
   get calculatedItemMarginLeft() {
     const firstNode = this.findFirstNode();
     return firstNode ?
       parseInt(getComputedStyle(firstNode).marginLeft, 10) : 0;
   }
 
+  // getter, calculate the top margin of each item
   get calculatedItemMarginTop() {
     const firstNode = this.findFirstNode();
     return firstNode ?
       parseInt(getComputedStyle(firstNode).marginTop, 10) : 0;
   }
 
+  // getter, calculate the right margin of each item
   get calculatedItemMarginRight() {
     const firstNode = this.findFirstNode();
     return firstNode ?
       parseInt(getComputedStyle(firstNode).marginRight, 10) : 0;
   }
 
+  // getter, calculate the bottom margin of each item
   get calculatedItemMarginBottom() {
     const firstNode = this.findFirstNode();
     return firstNode ?
       parseInt(getComputedStyle(firstNode).marginBottom, 10) : 0;
   }
 
+  // getter, calculate the item height
   get calculatedItemHeight() {
     const firstNode = this.findFirstNode();
     const { calculatedItemMarginTop, calculatedItemMarginBottom } = this;
@@ -64,6 +79,7 @@ export default class InfinitePane extends React.Component {
     return calculatedItemMarginTop + height + calculatedItemMarginBottom;
   }
 
+  // getter, calculate the item height
   get calculatedItemWidth() {
     const firstNode = this.findFirstNode();
     const { calculatedItemMarginLeft, calculatedItemMarginRight } = this;
@@ -72,6 +88,7 @@ export default class InfinitePane extends React.Component {
     return calculatedItemMarginLeft + width + calculatedItemMarginRight;
   }
 
+  // getter, calculate the items per row
   get calculatedItemsPerRow() {
     const containerWidth = this.findContainerNode().offsetWidth;
     const itemWidth = this.calculatedItemWidth;
@@ -81,6 +98,7 @@ export default class InfinitePane extends React.Component {
     return Math.floor(containerWidth / itemWidth);
   }
 
+  // getter, calculate the start row
   get calculatedStartRow() {
     const { bufferRows } = this.props;
     const containerTop = this.findContainerNode().getBoundingClientRect().top;
@@ -93,6 +111,7 @@ export default class InfinitePane extends React.Component {
     return Math.min(maxPossibleRow, rowAboveZero);
   }
 
+  // getter, calculate the visible rows
   get calculatedVisibleRows() {
     const { bufferRows } = this.props;
     const containerTop = this.findContainerNode().getBoundingClientRect().top;
@@ -105,6 +124,7 @@ export default class InfinitePane extends React.Component {
     return Math.max(Math.ceil((bottom - top) / this.calculatedItemHeight) + 1, 1) + bufferRows;
   }
 
+  // getter, the end index
   get endIndex() {
     const { totalCount } = this.props;
     const { startRow, visibleRows, itemsPerRow } = this.state;
@@ -112,83 +132,23 @@ export default class InfinitePane extends React.Component {
     return [ endIndex, totalCount ].sort((a, b) => a > b)[0];
   }
 
+  // getter, the start index
   get startIndex() {
     const { startRow, itemsPerRow } = this.state;
     return startRow * itemsPerRow;
   }
 
+  // getter, the total row count
   get totalRowCount() {
     return Math.ceil(this.props.totalCount / this.state.itemsPerRow);
   }
 
+  // getter, the buffered full list
   get fullList() {
     return _.times(this.props.totalCount, index => this.props.list[index]);
   }
 
-  findNodes() {
-    const { startIndex, endIndex } = this;
-    return this.fullList.slice(startIndex, endIndex).map(
-      (item, index) => {
-        index += startIndex;
-        const ref = `item_${index}`;
-        return ReactDOM.findDOMNode(this.refs[ref]);
-      }
-    ).filter(Boolean);
-  }
-
-  findLastNode() {
-    return this.findNodes().reverse()[0];
-  }
-
-  findFirstNode() {
-    return this.findNodes()[0];
-  }
-
-  findTopBufferNode() {
-    return ReactDOM.findDOMNode(this.refs.topBuffer) || nullNode;
-  }
-
-  findBottomBufferNode() {
-    return ReactDOM.findDOMNode(this.refs.bottomBuffer) || nullNode;
-  }
-
-  findContainerNode() {
-    return ReactDOM.findDOMNode(this.refs.infiniteContainer) || nullNode;
-  }
-
-  renderTopBuffer() {
-    const { startRow, rowHeight } = this.state;
-    const height = startRow * rowHeight || 0;
-    return <div ref="topBuffer" style={{ height, clear: 'both' }} />;
-  }
-
-  renderVisibleItems() {
-    const { startIndex, endIndex } = this;
-    let { Component, getKey } = this.props;
-    if (!getKey) {
-      getKey = item => item.id;
-    }
-    return this.fullList.slice(startIndex, endIndex).map((item, index) => {
-      let loaded = true;
-      index += startIndex;
-      if (item === undefined) {
-        item = this.fullList[0];
-        loaded = false;
-      }
-      const ref = `item_${index}`;
-      const component = <Component loaded={loaded} key={index} ref={ref} {...item} {...this.props.componentProps} />;
-      return component;
-    });
-  }
-
-  renderBottomBuffer() {
-    const { startRow, visibleRows, rowHeight } = this.state;
-    const { totalRowCount } = this;
-    const endRow = visibleRows + startRow;
-    const height = endRow > totalRowCount ? 0 : (totalRowCount - endRow) * rowHeight || 0;
-    return <div ref="bottomBuffer" style={{ height, clear: 'both' }} />;
-  }
-
+  // track window resize
   trackResize = () => {
     let scrollStep = -window.scrollY / (1000 / 15);
     let scrollInterval = setInterval(() => {
@@ -203,17 +163,57 @@ export default class InfinitePane extends React.Component {
     this.setState({ ...InfinitePane.initialState });
   };
 
+  // track window scroll
   trackScroll = () => {
     clearTimeout(this.scroll);
     this.scroll = setTimeout(this.calculatePositions.bind(this), 10);
   };
 
+  // find all of the visible nodes by their ref
+  findNodes() {
+    const { startIndex, endIndex } = this;
+    return this.fullList.slice(startIndex, endIndex).map(
+      (item, index) => {
+        index += startIndex;
+        const ref = `item_${index}`;
+        return ReactDOM.findDOMNode(this.refs[ref]);
+      }
+    ).filter(Boolean);
+  }
+
+  // find the last node in the visible list
+  findLastNode() {
+    return this.findNodes().reverse()[0];
+  }
+
+  // find the first node in the visible list
+  findFirstNode() {
+    return this.findNodes()[0];
+  }
+
+  // find the top buffer node
+  findTopBufferNode() {
+    return ReactDOM.findDOMNode(this.refs.topBuffer) || nullNode;
+  }
+
+  // find the bottom buffer node
+  findBottomBufferNode() {
+    return ReactDOM.findDOMNode(this.refs.bottomBuffer) || nullNode;
+  }
+
+  // find the main container node
+  findContainerNode() {
+    return ReactDOM.findDOMNode(this.refs.infiniteContainer) || nullNode;
+  }
+
+  // determine if the component should update
   shouldComponentUpdate(nextProps, nextState) {
     return !(
       _.isEqual(this.props, nextProps) && _.isEqual(this.state, nextState)
     );
   }
 
+  // calculate the positions of the nodes
   calculatePositions() {
     let {
       calculatedStartRow,
@@ -240,24 +240,65 @@ export default class InfinitePane extends React.Component {
     });
   }
 
+  // component life cycle before mount
   componentWillMount() {
     window.addEventListener('resize', this.trackResize.bind(this));
     window.addEventListener('scroll', this.trackScroll.bind(this));
   }
 
+  // component life cycle before unmount
   componentWillUnmount() {
     window.removeEventListener('resize', this.trackResize.bind(this));
     window.removeEventListener('scroll', this.trackScroll.bind(this));
   }
 
+  // component life cycle on mount
   componentDidMount() {
     this.calculatePositions();
   }
 
+  // component life cycle on update
   componentDidUpdate() {
     this.calculatePositions();
   }
 
+  // render the top buffer
+  renderTopBuffer() {
+    const { startRow, rowHeight } = this.state;
+    const height = startRow * rowHeight || 0;
+    return <div ref="topBuffer" style={{ height, clear: 'both' }} />;
+  }
+
+  // render the visible items
+  renderVisibleItems() {
+    const { startIndex, endIndex } = this;
+    let { Component, getKey } = this.props;
+    if (!getKey) {
+      getKey = item => item.id;
+    }
+    return this.fullList.slice(startIndex, endIndex).map((item, index) => {
+      let loaded = true;
+      index += startIndex;
+      if (item === undefined) {
+        item = this.fullList[0];
+        loaded = false;
+      }
+      const ref = `item_${index}`;
+      const component = <Component loaded={loaded} key={index} ref={ref} {...item} {...this.props.componentProps} />;
+      return component;
+    });
+  }
+
+  // render the bottom buffer
+  renderBottomBuffer() {
+    const { startRow, visibleRows, rowHeight } = this.state;
+    const { totalRowCount } = this;
+    const endRow = visibleRows + startRow;
+    const height = endRow > totalRowCount ? 0 : (totalRowCount - endRow) * rowHeight || 0;
+    return <div ref="bottomBuffer" style={{ height, clear: 'both' }} />;
+  }
+
+  // render the component
   render() {
     return (
       <div ref="infiniteContainer" {..._.omit(this.props, ...Object.keys(InfinitePane.propTypes))}>

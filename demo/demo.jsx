@@ -68,11 +68,11 @@ class DemoPage extends React.Component {
       <div style={style}>
         <div style={{ float: 'left' }}>
           <label for="imageCount">Number of Images to Load:</label>&nbsp;
-          <input name="imageCount" type="number" value={imageCount} onChange={this.handleImageCountChange} />&nbsp;
+          <input name="imageCount" type="number" value={imageCount} min="0" max="1000000" onChange={this.handleImageCountChange} />&nbsp;
           <label for="imageWidth">Image Width:</label>&nbsp;
-          <input name="imageWidth" type="number" value={imageWidth} onChange={this.handleImageWidthChange} />&nbsp;
+          <input name="imageWidth" type="number" value={imageWidth} min="10" max="1000" onChange={this.handleImageWidthChange} />&nbsp;
           <label for="imageHeight">Image Height:</label>&nbsp;
-          <input name="imageHeight" type="number" value={imageHeight} onChange={this.handleImageHeightChange} />&nbsp;
+          <input name="imageHeight" type="number" value={imageHeight} min="10" max="1000" onChange={this.handleImageHeightChange} />
         </div>
         <div style={{ float: 'right', marginRight: 20 }}>
           <strong>react-infinite-pane</strong>
