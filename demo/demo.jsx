@@ -75,11 +75,13 @@ class DemoPage extends React.Component {
           <input name="imageHeight" type="number" value={imageHeight} min="10" max="1000" onChange={this.handleImageHeightChange} />
         </div>
         <div style={{ float: 'right', marginRight: 20 }}>
-          <strong>react-infinite-pane</strong>
-          &nbsp;::
-          built by <a href="https://github.com/jwaldrip">Jason Waldrip</a>
-          &nbsp;::&nbsp;
-          <a href="https://github.com/jwaldrip/react-infinite-pane">view it on github</a>
+          <a href="https://www.npmjs.com/package/react-infinite-pane">
+            <img src="https://img.shields.io/npm/v/react-infinite-pane.svg" />
+          </a>
+          &nbsp;
+          <a href="https://github.com/jwaldrip/react-infinite-pane">
+            <img src="https://img.shields.io/badge/github-jwaldrip%2Freact--infinite--pane-blue.svg" />
+          </a>
         </div>
       </div>
     );
