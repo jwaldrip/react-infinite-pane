@@ -1,5 +1,6 @@
+import 'whatwg-fetch';
+
 import _ from 'lodash';
-import fetch from 'isomorphic-fetch';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
@@ -28,7 +29,7 @@ class DemoPage extends React.Component {
 
   get imageList() {
     const { imageList, imageWidth, imageHeight } = this.state;
-    return imageList.map(i => `https://unsplash.it/${imageWidth}/${imageHeight}/?image=${i.id}`);
+    return imageList.map(i => `/img/${imageWidth}/${imageHeight}/${i.id}`);
   }
 
   get imageUrls() {
