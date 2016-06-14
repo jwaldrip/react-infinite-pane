@@ -18,7 +18,13 @@ app.get('/img/:width/:height/:id', (req, res) => {
     headers['cache-control'] = 'public, max-age=86400';
     Object.keys(headers).forEach(key => res.header(key, headers[key]));
     res.status(statusCode);
-    imgRes.on('data', d => res.send(d));
+    imgRes.on('data', d => {
+      try {
+        res.send(d);
+      } catch (e) {
+        // Do nothing...
+      }
+    });
     imgRes.on('end', () => res.end() );
   });
 });
