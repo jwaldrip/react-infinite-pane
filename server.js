@@ -20,9 +20,9 @@ app.get('/img/:width/:height/:id', (req, res) => {
     res.status(statusCode);
     imgRes.on('data', d => {
       try {
-        res.send(d);
+        res.write(d, 'binary');
       } catch (e) {
-        // Do nothing...
+        console.error(e); // eslint-disable-line no-console
       }
     });
     imgRes.on('end', () => res.end() );

@@ -260,7 +260,7 @@ export default class InfinitePane extends React.Component {
 
   render() {
     return (
-      <div ref="infiniteContainer">
+      <div ref="infiniteContainer" {..._.omit(this.props, ...Object.keys(InfinitePane.propTypes))}>
         {this.renderTopBuffer()}
         {this.renderVisibleItems()}
         {this.renderBottomBuffer()}
