@@ -3,6 +3,10 @@
   "version": "0.0.1",
   "description": "Responsive infinite scroll pane for React",
   "main": "./dist/index.js",
+  "engines": {
+    "node": "6.2.1",
+    "npm": "2.9.5"
+  },
   "scripts": {
     "start": "node server.js",
     "build": "rm -rf dist/* && babel src --out-dir dist",
