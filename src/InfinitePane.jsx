@@ -6,12 +6,18 @@ const nullNode = document.createElement('div');
 
 export default class InfinitePane extends React.Component {
 
+  static defaultProps = {
+    componentProps: {},
+    bufferRows: 3
+  };
+
   static propTypes = {
     Component: React.PropTypes.func.isRequired,
-    componentProps: React.PropTypes.object,
     totalCount: React.PropTypes.number.isRequired,
     list: React.PropTypes.array.isRequired,
-    fetch: React.PropTypes.func
+    componentProps: React.PropTypes.object,
+    fetch: React.PropTypes.func,
+    bufferRows: React.PropTypes.number
   };
 
   static initialState = {
@@ -76,17 +82,19 @@ export default class InfinitePane extends React.Component {
   }
 
   get calculatedStartRow() {
+    const { bufferRows } = this.props;
     const containerTop = this.findContainerNode().getBoundingClientRect().top;
     if (this.calculatedItemHeight === 0 || containerTop > 0) {
       return 0;
     }
     const calculatedRow = Math.floor(-containerTop / this.calculatedItemHeight);
-    const rowAboveZero = Math.max(calculatedRow, 0);
+    const rowAboveZero = Math.max(calculatedRow - bufferRows, 0);
     const maxPossibleRow = Math.abs(this.totalRowCount - 1);
     return Math.min(maxPossibleRow, rowAboveZero);
   }
 
   get calculatedVisibleRows() {
+    const { bufferRows } = this.props;
     const containerTop = this.findContainerNode().getBoundingClientRect().top;
     const containerBottom = this.findContainerNode().getBoundingClientRect().bottom;
     if (this.calculatedItemHeight === 0 || containerBottom < 0) {
@@ -94,14 +102,14 @@ export default class InfinitePane extends React.Component {
     }
     const top = Math.max(0, containerTop);
     const bottom = Math.min(window.innerHeight, containerBottom);
-    return Math.max(Math.ceil((bottom - top) / this.calculatedItemHeight) + 1, 1);
+    return Math.max(Math.ceil((bottom - top) / this.calculatedItemHeight) + 1, 1) + bufferRows;
   }
 
   get endIndex() {
     const { totalCount } = this.props;
     const { startRow, visibleRows, itemsPerRow } = this.state;
     const endIndex = (startRow + visibleRows) * itemsPerRow;
-    return [ endIndex, totalCount ].sort((a, b) => { return a > b })[0];
+    return [ endIndex, totalCount ].sort((a, b) => a > b)[0];
   }
 
   get startIndex() {
