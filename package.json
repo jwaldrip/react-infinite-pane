@@ -1,6 +1,6 @@
 {
   "name": "react-infinite-pane",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Responsive infinite scroll pane for React",
   "main": "./dist/index.js",
   "engines": {
@@ -16,6 +16,9 @@
   "repository": {
     "type": "git",
     "url": "git+ssh://git@github.com/jwaldrip/react-infinite-pane.git"
+  },
+  "directories": {
+    "lib": "./dist"
   },
   "keywords": [
     "React",
