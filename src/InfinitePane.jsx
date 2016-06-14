@@ -150,17 +150,19 @@ export default class InfinitePane extends React.Component {
 
   // track window resize
   trackResize = () => {
-    let scrollStep = -window.scrollY / (1000 / 15);
-    let scrollInterval = setInterval(() => {
-      if (window.scrollY !== 0) {
-        window.scrollBy(0, scrollStep);
-      } else {
-        clearInterval(scrollInterval);
-        this.setState(InfinitePane.initialState);
-      }
-    }, 15);
-    document.body.scrollTop = document.documentElement.scrollTop = 0;
-    this.setState({ ...InfinitePane.initialState });
+    // let scrollStep = -window.scrollY / (1000 / 15);
+    // let scrollInterval = setInterval(() => {
+    //   if (window.scrollY !== 0) {
+    //     window.scrollBy(0, scrollStep);
+    //   } else {
+    //     clearInterval(scrollInterval);
+    //     this.setState(InfinitePane.initialState);
+    //   }
+    // }, 15);
+    // this.setState(InfinitePane.initialState);
+    // document.body.scrollTop = document.documentElement.scrollTop = 0;
+    clearTimeout(this.resize);
+    this.resize = setTimeout(this.calculatePositions.bind(this), 10);
   };
 
   // track window scroll

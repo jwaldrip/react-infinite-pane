@@ -12,7 +12,7 @@ class LoadedImage extends React.Component {
   }
 }
 
-const startingWidth = Math.ceil(window.innerWidth / 8 / 100) * 100;
+const startingWidth = 200;
 
 class DemoPage extends React.Component {
 
