@@ -12,14 +12,16 @@ class LoadedImage extends React.Component {
   }
 }
 
+const startingWidth = Math.ceil(window.innerWidth / 8 / 100) * 100;
+
 class DemoPage extends React.Component {
 
   constructor(...args) {
     super(...args);
     this.state = {
       imageCount: 0,
-      imageWidth: 300,
-      imageHeight: 200,
+      imageWidth: startingWidth,
+      imageHeight: Math.round(startingWidth * (3 / 4)),
       imageList: [],
     };
   }
