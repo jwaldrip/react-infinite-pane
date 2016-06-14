@@ -1,6 +1,6 @@
 {
   "name": "react-infinite-pane",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Responsive infinite scroll pane for React",
   "main": "./dist/index.js",
   "engines": {
@@ -10,7 +10,7 @@
   "scripts": {
     "start": "node server.js",
     "build": "rm -rf dist/* && babel src --out-dir dist",
-    "test": "jasmine"
+    "test": "mocha test/.setup.js test/**/*-test.js"
   },
   "repository": {
     "type": "git",
@@ -45,11 +45,13 @@
   },
   "devDependencies": {
     "babel-eslint": "^6.0.4",
+    "chai": "^3.5.0",
     "enzyme": "^2.3.0",
     "eslint": "^2.11.1",
     "eslint-plugin-babel": "^3.2.0",
     "eslint-plugin-react": "^5.1.1",
-    "jasmine": "^2.4.1",
-    "jasmine-enzyme": "^1.1.0"
+    "mocha": "^2.5.3",
+    "mocha-let": "^0.1.1",
+    "react-addons-test-utils": "^15.1.0"
   }
 }

@@ -43,6 +43,10 @@ Install dev dependencies:
 $ npm i -d && npm test
 ```
 
+## Todo
+
+- [ ] Tests. **Status: Currently the scroll state is difficult to test with JSDOM. Looking into using an actual browser environment to test.
+
 ## Contributing
 
 Pull requests and stars are always welcome. For bugs and feature requests, [please create an issue](https://github.com/jwaldrip/react-infinite-pane/issues)
