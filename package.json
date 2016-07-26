@@ -1,6 +1,6 @@
 {
   "name": "react-infinite-pane",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Responsive infinite scroll pane for React",
   "main": "./dist/index.js",
   "engines": {

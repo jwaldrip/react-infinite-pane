@@ -150,17 +150,6 @@ export default class InfinitePane extends React.Component {
 
   // track window resize
   trackResize = () => {
-    // let scrollStep = -window.scrollY / (1000 / 15);
-    // let scrollInterval = setInterval(() => {
-    //   if (window.scrollY !== 0) {
-    //     window.scrollBy(0, scrollStep);
-    //   } else {
-    //     clearInterval(scrollInterval);
-    //     this.setState(InfinitePane.initialState);
-    //   }
-    // }, 15);
-    // this.setState(InfinitePane.initialState);
-    // document.body.scrollTop = document.documentElement.scrollTop = 0;
     clearTimeout(this.resize);
     this.resize = setTimeout(this.calculatePositions.bind(this), 10);
   };
@@ -244,14 +233,16 @@ export default class InfinitePane extends React.Component {
 
   // component life cycle before mount
   componentWillMount() {
-    window.addEventListener('resize', this.trackResize.bind(this));
-    window.addEventListener('scroll', this.trackScroll.bind(this));
+    window.addEventListener('resize', this.trackResize);
+    window.addEventListener('scroll', this.trackScroll);
   }
 
   // component life cycle before unmount
   componentWillUnmount() {
-    window.removeEventListener('resize', this.trackResize.bind(this));
-    window.removeEventListener('scroll', this.trackScroll.bind(this));
+    clearTimeout(this.resize);
+    clearTimeout(this.scroll);
+    window.removeEventListener('resize', this.trackResize);
+    window.removeEventListener('scroll', this.trackScroll);
   }
 
   // component life cycle on mount
