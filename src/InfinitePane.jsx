@@ -1,6 +1,7 @@
-import _ from 'lodash';
+import { times, isEqual } from 'lodash';
 import React from 'react';
 import ReactDOM from 'react-dom';
+import filterReactDomProps from 'filter-react-dom-props';
 
 const nullNode = document.createElement('div');
 
@@ -145,7 +146,7 @@ export default class InfinitePane extends React.Component {
 
   // getter, the buffered full list
   get fullList() {
-    return _.times(this.props.totalCount, index => this.props.list[index]);
+    return times(this.props.totalCount, index => this.props.list[index]);
   }
 
   // track window resize
@@ -200,7 +201,7 @@ export default class InfinitePane extends React.Component {
   // determine if the component should update
   shouldComponentUpdate(nextProps, nextState) {
     return !(
-      _.isEqual(this.props, nextProps) && _.isEqual(this.state, nextState)
+      isEqual(this.props, nextProps) && isEqual(this.state, nextState)
     );
   }
 
@@ -294,7 +295,7 @@ export default class InfinitePane extends React.Component {
   // render the component
   render() {
     return (
-      <div ref="infiniteContainer" {..._.omit(this.props, ...Object.keys(InfinitePane.propTypes))}>
+      <div ref="infiniteContainer" {...filterReactDomProps(this.props)}>
         {this.renderTopBuffer()}
         {this.renderVisibleItems()}
         {this.renderBottomBuffer()}

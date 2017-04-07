@@ -14,14 +14,14 @@ module.exports = {
     filename: 'demo.js',
   },
   resolve: {
-    extensions: [ '', '.js', '.jsx', '.es6' ]
+    extensions: [ '.js', '.jsx', '.es6' ]
   },
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.jsx?$/,
         exclude: /node_modules/,
-        loader: 'babel',
+        loader: 'babel-loader',
       }
     ]
   }

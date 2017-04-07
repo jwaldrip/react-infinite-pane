@@ -1,6 +1,6 @@
 import 'whatwg-fetch';
-
-import _ from 'lodash';
+import filterReactDomProps from 'filter-react-dom-props';
+import { times } from 'lodash';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
@@ -8,7 +8,7 @@ import InfinitePane from '../src';
 
 class LoadedImage extends React.Component {
   render() {
-    return <img className="demo-img" {...this.props} />;
+    return <img className="demo-img" {...filterReactDomProps(this.props)} />;
   }
 }
 
@@ -33,7 +33,7 @@ class DemoPage extends React.Component {
 
   get imageUrls() {
     const { imageList } = this;
-    return _.times(this.state.imageCount, i => ({ src: imageList[i % imageList.length] }));
+    return times(this.state.imageCount, i => ({ src: imageList[i % imageList.length] }));
   }
 
   componentDidMount() {
@@ -69,11 +69,11 @@ class DemoPage extends React.Component {
     return (
       <div style={style}>
         <div style={{ float: 'left' }}>
-          <label for="imageCount">Number of Images to Load:</label>&nbsp;
+          <label htmlFor="imageCount">Number of Images to Load:</label>&nbsp;
           <input name="imageCount" type="number" value={imageCount} min="0" max="1000000" onChange={this.handleImageCountChange} />&nbsp;
-          <label for="imageWidth">Image Width:</label>&nbsp;
+          <label htmlFor="imageWidth">Image Width:</label>&nbsp;
           <input name="imageWidth" type="number" value={imageWidth} min="10" max="1000" onChange={this.handleImageWidthChange} />&nbsp;
-          <label for="imageHeight">Image Height:</label>&nbsp;
+          <label htmlFor="imageHeight">Image Height:</label>&nbsp;
           <input name="imageHeight" type="number" value={imageHeight} min="10" max="1000" onChange={this.handleImageHeightChange} />
         </div>
         <div style={{ float: 'right', marginRight: 20 }}>

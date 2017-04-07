@@ -40,21 +40,22 @@
     "babel-preset-react": "^6.5.0",
     "babel-preset-stage-0": "^6.5.0",
     "express": "^4.13.4",
+    "filter-react-dom-props": "^0.0.2",
     "lodash": "^4.13.1",
-    "react": "^15.1.0",
-    "react-dom": "^15.1.0",
-    "webpack": "^1.13.1",
+    "react": "^15.0",
+    "react-dom": "^15.0",
+    "webpack": "^2.3",
     "webpack-dev-middleware": "^1.6.1",
-    "whatwg-fetch": "^1.0.0"
+    "whatwg-fetch": "^2.0"
   },
   "devDependencies": {
-    "babel-eslint": "^6.0.4",
+    "babel-eslint": "^7.0",
     "chai": "^3.5.0",
     "enzyme": "^2.3.0",
-    "eslint": "^2.11.1",
-    "eslint-plugin-babel": "^3.2.0",
-    "eslint-plugin-react": "^5.1.1",
-    "mocha": "^2.5.3",
+    "eslint": "^3.19",
+    "eslint-plugin-babel": "^4.1",
+    "eslint-plugin-react": "^6.10",
+    "mocha": "^3.0",
     "mocha-let": "^0.1.1",
     "react-addons-test-utils": "^15.1.0"
   }
